@@ -11,7 +11,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Post(':createUser')
+  @Post()
   createUser(@Body() newUser: User) {
     return this.usersService.createUser(newUser);
   }
