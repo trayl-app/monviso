@@ -1,0 +1,25 @@
+import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { Repository } from '../repository';
+
+@Injectable()
+export class UsersRepository extends Repository<User> {
+  async find(id: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
+  async findAll(): Promise<User[]> {
+    return [];
+  }
+
+  async save(user: User): Promise<User> {
+    return user;
+  }
+
+  async remove(id: string): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.log(id);
+  }
+}
