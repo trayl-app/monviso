@@ -6,7 +6,7 @@ export const userEntityFixture = (overrides?: Partial<User>): User => ({
   email: faker.internet.email(),
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  createdAt: faker.date.birthdate(),
-  updatedAt: faker.date.birthdate(),
+  createdAt: faker.date.past(),
+  updatedAt: faker.date.recent(),
   ...overrides,
 });
