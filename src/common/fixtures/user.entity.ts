@@ -4,6 +4,9 @@ import { faker } from '@faker-js/faker';
 export const userEntityFixture = (overrides?: Partial<User>): User => ({
   id: faker.datatype.uuid(),
   email: faker.internet.email(),
-  name: faker.name.fullName(),
+  firstName: faker.name.firstName(),
+  lastName: faker.name.lastName(),
+  createdAt: faker.date.birthdate(),
+  updatedAt: faker.date.birthdate(),
   ...overrides,
 });
