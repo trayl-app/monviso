@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const prismaClient = app.get(PrismaClient);
+  const prismaClient = new PrismaClient();
   await prismaClient.enableShutdownHooks(app);
 
   await app.listen(3000);

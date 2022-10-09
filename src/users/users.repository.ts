@@ -9,17 +9,4 @@ export class UsersRepository extends Repository<User> {
       where: { id },
     });
   }
-
-  async findAll(): Promise<User[]> {
-    return [];
-  }
-
-  async save(user: User): Promise<User> {
-    return user;
-  }
-
-  async remove(id: string): Promise<void> {
-    // eslint-disable-next-line no-console
-    console.log(id);
-  }
 }

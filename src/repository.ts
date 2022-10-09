@@ -8,7 +8,7 @@ export abstract class Repository<T> {
   }
 
   abstract find(id: string): Promise<T | null>;
-  abstract findAll(): Promise<T[]>;
-  abstract save(entity: T): Promise<T>;
-  abstract remove(id: string): Promise<void>;
+  //   abstract findAll(): Promise<T[]>;
+  //   abstract save(entity: T): Promise<T>;
+  //   abstract remove(id: string): Promise<void>;
 }

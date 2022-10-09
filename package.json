@@ -1,7 +1,7 @@
 {
   "name": "monviso",
   "version": "0.0.1",
-  "description": "User profile service",
+  "description": "User profile service🕵🏻‍♂️",
   "author": "Niccolò Fant, <niccolo.fant@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
@@ -15,9 +15,11 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "generate": "npx prisma generate",
+    "seed": "ts-node --transpile-only prisma/seed.ts",
     "migrate:dev": "npx prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prisma:setup:dev": "npx prisma db push && yarn seed",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -39,6 +41,7 @@
     "rxjs": "7.5.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "7.5.0",
     "@nestjs/cli": "9.1.4",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.1.4",

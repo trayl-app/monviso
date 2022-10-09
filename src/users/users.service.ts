@@ -1,31 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
+  async findOne(id: string): Promise<User> {
+    const user = await this.usersRepository.find(id);
 
-  findAll() {
-    return `This action returns all users`;
-  }
+    if (!user) {
+      throw new HttpException('User not found', 404);
+    }
 
-  findOne(id: string) {
-    return this.usersRepository.find(id);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+    return user;
   }
 }
