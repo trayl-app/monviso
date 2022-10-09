@@ -4,6 +4,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfilesService {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   create(createProfileDto: CreateProfileDto) {
     return 'This action adds a new profile';
   }
@@ -16,6 +17,7 @@ export class ProfilesService {
     return `This action returns a #${id} profile`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, updateProfileDto: UpdateProfileDto) {
     return `This action updates a #${id} profile`;
   }
