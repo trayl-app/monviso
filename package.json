@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "yarn generate",
     "ci": "yarn install --immutable --immutable-cache --check-cache",
     "prebuild": "rimraf dist",
     "build": "nest build",
