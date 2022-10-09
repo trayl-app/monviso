@@ -15,4 +15,14 @@ export class UsersService {
 
     return user;
   }
+
+  async createUser(newUser: User): Promise<User> {
+    const user = await this.usersRepository.create(newUser);
+
+    if (!user) {
+      throw new HttpException('User not created', 500);
+    }
+
+    return user;
+  }
 }
