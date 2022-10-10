@@ -6,4 +6,8 @@ export class CreateUserDto {
   firstName: string;
 
   lastName: string;
+
+  createdAt: Date;
+
+  updatedAt: Date;
 }
