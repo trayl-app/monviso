@@ -9,4 +9,10 @@ export class UsersRepository extends Repository<User> {
       where: { id },
     });
   }
+
+  async create(newUser: User): Promise<User | null> {
+    return this.prisma.user.create({
+      data: newUser,
+    });
+  }
 }
