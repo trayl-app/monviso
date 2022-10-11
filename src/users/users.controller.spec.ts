@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaModule } from '../prisma/prisma.module';
 import { UsersController } from './users.controller';
-import { UsersRepository } from './users.repository';
 import { UsersService } from './users.service';
 
 describe('UsersController', () => {
@@ -9,7 +9,8 @@ describe('UsersController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [UsersService, UsersRepository],
+      providers: [UsersService],
+      imports: [PrismaModule],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);

@@ -1,5 +1,5 @@
-import { userEntityFixture } from '../src/common/fixtures/user.entity';
-import { PrismaClient } from './client';
+import { PrismaClient } from '@prisma/client';
+import { userEntityFixture } from '../src/users/fixtures/user.entity';
 
 const prismaClient = new PrismaClient();
 
@@ -12,14 +12,10 @@ const seed = async () => {
 };
 
 seed()
-  .then(async () => {
-    await prismaClient.$disconnect();
-  })
   .catch(async () => {
-    await prismaClient.$disconnect();
-
     process.exit(1);
   })
-  .finally(() => {
+  .finally(async () => {
+    await prismaClient.$disconnect();
     process.exit(0);
   });
