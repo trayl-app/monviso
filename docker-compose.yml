@@ -1,9 +1,22 @@
 version: '3.9'
 
 services:
+  monviso:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: monviso
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+
   postgres:
     image: postgres:14.4-alpine
-    container_name: monviso-db-local
+    container_name: postgres
     restart: always
     ports:
       - 5432:5432
