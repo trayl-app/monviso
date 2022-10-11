@@ -8,7 +8,7 @@ COPY package.json .
 COPY yarn.lock .
 COPY prisma ./prisma
 
-# Install openssl
+# Install openssl (in order to fix a bug with Prisma)
 RUN apt-get update 
 RUN apt-get install -y openssl
 
@@ -27,7 +27,7 @@ FROM node:18-slim
 # Set working directory
 WORKDIR /app
 
-# Install openssl
+# Install openssl (in order to fix a bug with Prisma)
 RUN apt-get update 
 RUN apt-get install -y openssl
 
