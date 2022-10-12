@@ -1,22 +1,22 @@
-import { Exclude, Expose } from 'class-transformer';
+import { User } from '@prisma/client';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-@Exclude()
-export class CreateUserDto {
-  @Expose()
+export class CreateUserDto implements Omit<User, 'createdAt' | 'updatedAt'> {
+  @IsString()
+  @IsNotEmpty()
   id: string;
 
-  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  @Expose()
+  @IsString()
+  @MinLength(2)
+  @IsNotEmpty()
   firstName: string;
 
-  @Expose()
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
   lastName: string;
-
-  @Expose()
-  createdAt: Date;
-
-  @Expose()
-  updatedAt: Date;
 }
