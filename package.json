@@ -12,10 +12,11 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start:dev": "yarn migrate:dev && yarn seed && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "start:migrate:prod": "npx prisma migrate deploy && yarn start:prod",
+    "seed": "ts-node prisma/seed.ts",
     "generate": "npx prisma generate",
     "migrate:dev": "npx prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
@@ -27,9 +28,6 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.config.ts",
     "prepare": "husky install"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   },
   "lint-staged": {
     "*.ts": "eslint --fix"

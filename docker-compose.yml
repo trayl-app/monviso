@@ -8,11 +8,13 @@ services:
     container_name: monviso
     restart: always
     ports:
-      - 3000:3000
+      - 8080:8080
     depends_on:
       - postgres
     env_file:
       - .env
+    volumes:
+      - ./monviso:/app/monviso
 
   postgres:
     image: postgres:14.4-alpine

@@ -38,7 +38,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/dist ./dist
 
 # Expose the listening port of your app
-EXPOSE 3000
+EXPOSE 8080
 
 # Run the app
 CMD ["yarn", "start:migrate:prod"]
