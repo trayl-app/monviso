@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Auth } from 'firebase-admin/lib/auth/auth';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { FirebaseService } from './firebase.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
     this.auth = firebaseService.auth;
   }
 
-  async use(req: Request, _: Response, next: () => void) {
+  async use(req: Request, _: Response, next: NextFunction) {
     const bearerToken = req.get('Authorization');
 
     if (!bearerToken) {
