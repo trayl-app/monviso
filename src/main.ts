@@ -2,6 +2,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { GLOBAL_PREFIX } from './constants';
 import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
@@ -16,6 +17,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(classSerializerInterceptor);
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix(GLOBAL_PREFIX);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Monviso')
@@ -27,7 +29,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup(GLOBAL_PREFIX, app, document);
 
   await app.listen(8080);
 }

@@ -14,7 +14,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./monviso:/app/monviso
+      - monviso:/app/monviso
 
   postgres:
     image: postgres:14.4-alpine
@@ -31,4 +31,4 @@ services:
 
 volumes:
   postgres:
-    driver: local
+  monviso:
