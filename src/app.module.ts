@@ -18,7 +18,10 @@ import { UsersController } from './users/users.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    if (process.env.NODE_ENV !== 'development') {
+    if (
+      process.env.NODE_ENV !== 'development' &&
+      process.env.NODE_ENV !== 'test'
+    ) {
       consumer.apply(FirebaseAuthMiddleware).forRoutes(UsersController);
     }
   }
