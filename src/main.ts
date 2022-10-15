@@ -16,6 +16,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(classSerializerInterceptor);
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api');
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Monviso')
