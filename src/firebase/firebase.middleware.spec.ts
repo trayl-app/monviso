@@ -26,14 +26,14 @@ describe('FirebaseMiddleware', () => {
     jest.resetAllMocks();
   });
 
-  it('should throw UnauthorizedException if the bearer token is missing', () => {
+  it('should throw UnauthorizedException if the bearer token is missing', async () => {
     const req = {
       get: jest.fn(),
     } as any as Request;
 
     const error = new UnauthorizedException('Missing Authorization token');
 
-    expect(middleware.use(req, null, null)).rejects.toThrow(error);
+    await expect(middleware.use(req, null, null)).rejects.toThrow(error);
   });
 
   it('should throw UnauthorizedException if the bearer token is invalid', async () => {
