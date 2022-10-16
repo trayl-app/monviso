@@ -6,7 +6,7 @@ import { FirebaseService } from '../src/firebase/firebase.service';
 import { createUserDtoFixture } from '../src/users/fixtures/create-user.dto';
 import { PrismaService } from '../src/prisma/prisma.service';
 
-describe('/api/v1/users', () => {
+describe('/api/v1/me', () => {
   let app: INestApplication;
   let firebaseService: FirebaseService;
   let prismaService: PrismaService;
@@ -34,20 +34,23 @@ describe('/api/v1/users', () => {
     await app.close();
   });
 
-  describe('POST', () => {
+  describe('GET', () => {
     describe('Success', () => {
-      it('201', async () => {
+      it('200', async () => {
         const createUserDto = createUserDtoFixture();
+
+        await prismaService.user.create({
+          data: createUserDto,
+        });
 
         (firebaseService.auth.verifyIdToken as jest.Mock).mockResolvedValue({
           user_id: createUserDto.id,
         });
 
         const res = await request(app.getHttpServer())
-          .post('/v1/users')
-          .send(createUserDto)
+          .get('/v1/me')
           .set('Authorization', 'Bearer token')
-          .expect(201);
+          .expect(200);
 
         expect(res.body).toEqual({
           ...createUserDto,
@@ -59,29 +62,18 @@ describe('/api/v1/users', () => {
 
     describe('Failure', () => {
       it('401', async () => {
-        (firebaseService.auth.verifyIdToken as jest.Mock).mockRejectedValue(
-          new Error('error'),
-        );
-
-        await request(app.getHttpServer()).post('/v1/users').send().expect(401);
+        await request(app.getHttpServer()).get('/v1/me').expect(401);
       });
 
-      it('409', async () => {
-        const createUserDto = createUserDtoFixture();
-
-        await prismaService.user.create({
-          data: createUserDto,
-        });
-
+      it('404', () => {
         (firebaseService.auth.verifyIdToken as jest.Mock).mockResolvedValue({
-          user_id: createUserDto.id,
+          user_id: 'non-existent-user-id',
         });
 
-        await request(app.getHttpServer())
-          .post('/v1/users')
-          .send(createUserDto)
+        return request(app.getHttpServer())
+          .get('/v1/me')
           .set('Authorization', 'Bearer token')
-          .expect(409);
+          .expect(404);
       });
     });
   });

@@ -13,6 +13,7 @@ import { UserEntity } from './entities/user.entity';
 jest.mock('../prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
     user: {
+      findUnique: jest.fn(),
       findMany: jest.fn(),
       create: jest.fn(),
     },
@@ -33,52 +34,87 @@ describe('UsersService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  it('should create a user', async () => {
-    const createUserDto = createUserDtoFixture();
-    const userTable = userTableFixture();
+  describe('findOneOrThrow', () => {
+    it('should find a user with the given id', async () => {
+      const userTable = userTableFixture();
 
-    (prismaService.user.findMany as jest.Mock).mockResolvedValue([]);
-    (prismaService.user.create as jest.Mock).mockResolvedValue(userTable);
+      (prismaService.user.findUnique as jest.Mock).mockResolvedValue(userTable);
 
-    const response = await service.create(createUserDto);
+      const user = await service.findByIdOrThrow(userTable.id);
 
-    expect(prismaService.user.findMany).toHaveBeenCalledWith({
-      where: {
-        OR: [{ id: createUserDto.id }, { email: createUserDto.email }],
-      },
+      expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { id: userTable.id },
+      });
+      expect(user).toEqual(new UserEntity(userTable));
     });
-    expect(prismaService.user.create).toHaveBeenCalledWith({
-      data: createUserDto,
+
+    it('should throw NotFoundException if user with given id does not exist', async () => {
+      (prismaService.user.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.findByIdOrThrow('non-existent-id')).rejects.toThrow(
+        new ConflictException('User with id: non-existent-id not found'),
+      );
     });
-    expect(response).toEqual(new UserEntity(userTable));
+
+    it('should throw InternalServerErrorException if an error occurs', async () => {
+      (prismaService.user.findUnique as jest.Mock).mockRejectedValue(
+        new Error('Some error'),
+      );
+
+      await expect(service.findByIdOrThrow('some-id')).rejects.toThrow(
+        new InternalServerErrorException(),
+      );
+    });
   });
 
-  it('should throw ConflictException if a user with that id or email already exists', async () => {
-    const createUserDto = createUserDtoFixture();
+  describe('create', () => {
+    it('should create a user', async () => {
+      const createUserDto = createUserDtoFixture();
+      const userTable = userTableFixture();
 
-    (prismaService.user.findMany as jest.Mock).mockResolvedValue([
-      userTableFixture({
-        id: createUserDto.id,
-        email: createUserDto.email,
-      }),
-    ]);
+      (prismaService.user.findMany as jest.Mock).mockResolvedValue([]);
+      (prismaService.user.create as jest.Mock).mockResolvedValue(userTable);
 
-    await expect(service.create(createUserDto)).rejects.toThrow(
-      new ConflictException(
-        `User with id: ${createUserDto.id} or email: ${createUserDto.email} already exists`,
-      ),
-    );
-  });
+      const response = await service.create(createUserDto);
 
-  it('should throw InternalServerErrorException if the PrismaService throws', async () => {
-    const createUserDto = createUserDtoFixture();
+      expect(prismaService.user.findMany).toHaveBeenCalledWith({
+        where: {
+          OR: [{ id: createUserDto.id }, { email: createUserDto.email }],
+        },
+      });
+      expect(prismaService.user.create).toHaveBeenCalledWith({
+        data: createUserDto,
+      });
+      expect(response).toEqual(new UserEntity(userTable));
+    });
 
-    (prismaService.user.create as jest.Mock).mockRejectedValue(
-      new Error("Can't connect to database"),
-    );
+    it('should throw ConflictException if a user with that id or email already exists', async () => {
+      const createUserDto = createUserDtoFixture();
 
-    await expect(service.create(createUserDto)).rejects.toThrow(
-      new InternalServerErrorException(),
-    );
+      (prismaService.user.findMany as jest.Mock).mockResolvedValue([
+        userTableFixture({
+          id: createUserDto.id,
+          email: createUserDto.email,
+        }),
+      ]);
+
+      await expect(service.create(createUserDto)).rejects.toThrow(
+        new ConflictException(
+          `User with id: ${createUserDto.id} or email: ${createUserDto.email} already exists`,
+        ),
+      );
+    });
+
+    it('should throw InternalServerErrorException if an error occurs', async () => {
+      const createUserDto = createUserDtoFixture();
+
+      (prismaService.user.create as jest.Mock).mockRejectedValue(
+        new Error("Can't connect to database"),
+      );
+
+      await expect(service.create(createUserDto)).rejects.toThrow(
+        new InternalServerErrorException(),
+      );
+    });
   });
 });

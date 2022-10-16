@@ -39,7 +39,7 @@ describe('UsersController', () => {
       expect(response).toEqual(userEntity);
     });
 
-    it("should throw if the UserService's create method throws", async () => {
+    it("should throw if the UsersService's create method throws", async () => {
       const createUserDto = createUserDtoFixture();
 
       (service.create as jest.Mock).mockRejectedValue(new Error());
