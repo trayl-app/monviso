@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { FirebaseAuthMiddleware } from './firebase/firebase.middleware';
@@ -11,6 +12,18 @@ import { UsersController } from './users/users.controller';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
+    LoggerModule.forRoot(
+      process.env.NODE_ENV === 'development'
+        ? {
+            pinoHttp: {
+              transport: {
+                target: 'pino-pretty',
+              },
+            },
+          }
+        : undefined,
+    ),
     UsersModule,
     PrismaModule,
     FirebaseModule,
@@ -18,10 +31,7 @@ import { UsersController } from './users/users.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    if (
-      process.env.NODE_ENV !== 'development' &&
-      process.env.NODE_ENV !== 'test'
-    ) {
+    if (process.env.NODE_ENV === 'production') {
       consumer.apply(FirebaseAuthMiddleware).forRoutes(UsersController);
     }
   }
