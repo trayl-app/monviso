@@ -6,13 +6,14 @@ import { PrismaModule } from './prisma/prisma.module';
 import { FirebaseAuthMiddleware } from './firebase/firebase.middleware';
 import { FirebaseModule } from './firebase/firebase.module';
 import { UsersController } from './users/users.controller';
+import { MeModule } from './me/me.module';
+import { MeController } from './me/me.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
     LoggerModule.forRoot(
       process.env.NODE_ENV === 'development'
         ? {
@@ -27,12 +28,15 @@ import { UsersController } from './users/users.controller';
     UsersModule,
     PrismaModule,
     FirebaseModule,
+    MeModule,
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    if (process.env.NODE_ENV === 'production') {
-      consumer.apply(FirebaseAuthMiddleware).forRoutes(UsersController);
+    if (process.env.NODE_ENV !== 'development') {
+      consumer
+        .apply(FirebaseAuthMiddleware)
+        .forRoutes(UsersController, MeController);
     }
   }
 }
