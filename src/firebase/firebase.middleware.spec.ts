@@ -1,23 +1,19 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { FirebaseAuthMiddleware } from './firebase.middleware';
 import { FirebaseService } from './firebase.service';
 import { decodedIdTokenFixture } from './fixtures/decodedIdToken';
 
-jest.mock('./firebase.service');
-
 describe('FirebaseMiddleware', () => {
   let middleware: FirebaseAuthMiddleware;
+  let service: FirebaseService;
 
   beforeEach(async () => {
-    (FirebaseService as jest.Mock).mockReturnValue({
+    service = {
       auth: {
         verifyIdToken: jest.fn(),
       },
-    });
-
-    const service = new FirebaseService(new ConfigService());
+    } as any as FirebaseService;
 
     middleware = new FirebaseAuthMiddleware(service);
   });
@@ -37,11 +33,9 @@ describe('FirebaseMiddleware', () => {
   });
 
   it('should throw UnauthorizedException if the bearer token is invalid', async () => {
-    (FirebaseService as jest.Mock).mockReturnValue({
-      auth: {
-        verifyIdToken: jest.fn().mockRejectedValue(new Error('Invalid token')),
-      },
-    });
+    (service.auth.verifyIdToken as jest.Mock).mockRejectedValue(
+      new Error('Invalid token'),
+    );
 
     const req = {
       get: jest.fn().mockReturnValue('Bearer invalid-token'),
@@ -53,15 +47,15 @@ describe('FirebaseMiddleware', () => {
   });
 
   it('should call next if the bearer token is valid', async () => {
-    (FirebaseService as jest.Mock).mockReturnValue({
-      auth: {
-        verifyIdToken: jest.fn().mockResolvedValue(decodedIdTokenFixture()),
-      },
-    });
-
     const req = {
       get: jest.fn().mockReturnValue('Bearer valid-token'),
     } as any as Request;
+
+    (service.auth.verifyIdToken as jest.Mock).mockResolvedValue(
+      decodedIdTokenFixture({
+        userId: 'userId',
+      }),
+    );
 
     const next = jest.fn();
 

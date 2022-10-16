@@ -6,6 +6,11 @@ import {
 import { Auth } from 'firebase-admin/lib/auth/auth';
 import { NextFunction, Request, Response } from 'express';
 import { FirebaseService } from './firebase.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+
+export type AuthRequest = Request & {
+  userId?: CreateUserDto['id'];
+};
 
 @Injectable()
 export class FirebaseAuthMiddleware implements NestMiddleware {
@@ -15,7 +20,7 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
     this.auth = firebaseService.auth;
   }
 
-  async use(req: Request, _: Response, next: NextFunction) {
+  async use(req: AuthRequest, _: Response, next: NextFunction) {
     const bearerToken = req.get('Authorization');
 
     if (!bearerToken) {
@@ -25,7 +30,9 @@ export class FirebaseAuthMiddleware implements NestMiddleware {
     try {
       const token = bearerToken.split(' ')[1];
 
-      await this.auth.verifyIdToken(token);
+      const decodedToken = await this.auth.verifyIdToken(token);
+
+      req.userId = decodedToken.user_id;
 
       next();
     } catch (error) {
