@@ -1,8 +1,8 @@
 {
   "name": "monviso",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "User profile service🕵🏻‍♂️",
-  "author": "Niccolò Fant, <niccolo.fant@gmail.com>",
+  "author": "Trayl, <app.trayl@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
