@@ -1,7 +1,6 @@
 # Monviso
 
-[![CI](https://github.com/trayl-app/monviso/actions/workflows/ci.yml/badge.svg)](https://github.com/trayl-app/monviso/actions/workflows/ci.yml)
-[![Docker Image Size](https://badgen.net/docker/size/trayl/monviso?icon=docker&label=image%20size)](https://hub.docker.com/r/trayl/monviso) [![Code style](https://badgen.net/badge/code%20style/airbnb%20%2B%20prettier/ff5a5f?icon=airbnb&cache=300)](https://github.com/airbnb/javascript)
+[![CI](https://github.com/trayl-app/monviso/actions/workflows/ci.yml/badge.svg)](https://github.com/trayl-app/monviso/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/trayl-app/monviso/branch/test/graph/badge.svg?token=IY7HJQ1OYO)](https://codecov.io/gh/trayl-app/monviso) [![Docker Image Size](https://badgen.net/docker/size/trayl/monviso?icon=docker&label=image%20size)](https://hub.docker.com/r/trayl/monviso) [![Code style](https://badgen.net/badge/code%20style/airbnb%20%2B%20prettier/ff5a5f?icon=airbnb&cache=300)](https://github.com/airbnb/javascript)
 
 This is the micro-service responsible for managing users and user profiles.
 
