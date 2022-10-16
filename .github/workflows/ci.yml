@@ -36,6 +36,19 @@ jobs:
       - run: yarn test
       - run: npx prisma db push && yarn test:e2e
 
+  code_coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
   build:
     name: Build
     runs-on: ubuntu-latest
