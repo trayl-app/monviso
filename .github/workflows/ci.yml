@@ -42,8 +42,17 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'yarn'
+      - run: yarn ci
+      - run: yarn test:cov
       - uses: codecov/codecov-action@v3
         with:
+          directory: ./coverage
+          path_to_write_report: ./coverage/coverage.txt # optional
           flags: unittests # optional
           name: codecov-umbrella # optional
           fail_ci_if_error: true # optional (default = false)
