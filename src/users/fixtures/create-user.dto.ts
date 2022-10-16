@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { UserEntity } from '../entities/user.entity';
+import { CreateUserDto } from '../dto/create-user.dto';
 
-export const userEntityFixture = (
-  overrides?: Partial<UserEntity>,
-): UserEntity => {
+export const createUserDtoFixture = (
+  overrides?: Partial<CreateUserDto>,
+): CreateUserDto => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
 
@@ -12,9 +12,6 @@ export const userEntityFixture = (
     email: faker.internet.email(firstName, lastName),
     firstName,
     lastName,
-    fullName: `${firstName} ${lastName}`,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent(),
     ...overrides,
   };
 };

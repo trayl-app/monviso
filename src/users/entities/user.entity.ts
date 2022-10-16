@@ -43,11 +43,11 @@ export class UserEntity implements User {
     Object.assign(this, partial);
   }
 
-  @Expose()
   @ApiProperty({
     description: 'The full name of the user',
     example: 'John Doe',
   })
+  @Expose()
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }

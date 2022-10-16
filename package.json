@@ -13,7 +13,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NODE_ENV=development nest start",
     "dev": "NODE_ENV=development nest start --watch",
-    "start:dev": "prisma:setup:dev && yarn dev",
+    "start:dev": "yarn prisma:setup:dev && yarn dev",
     "start:debug": "NODE_ENV=development nest start --debug --watch",
     "start:prod": "NODE_ENV=production node dist/main",
     "start:migrate:prod": "npx prisma migrate deploy && yarn start:prod",

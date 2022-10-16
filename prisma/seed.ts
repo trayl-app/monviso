@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { userEntityFixture } from '../src/users/fixtures/user.entity';
+import { userTableFixture } from '../src/users/fixtures/user.table';
 
 const prismaClient = new PrismaClient();
 
@@ -7,7 +7,7 @@ const USER_COUNT = 3;
 
 const seed = async () => {
   await prismaClient.user.createMany({
-    data: [...Array(USER_COUNT)].map(userEntityFixture),
+    data: [...Array(USER_COUNT)].map(userTableFixture),
   });
 };
 
