@@ -1,9 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { UserEntity } from '../entities/user.entity';
+import { User } from '@prisma/client';
 
-export const userEntityFixture = (
-  overrides?: Partial<UserEntity>,
-): UserEntity => {
+export const userTableFixture = (overrides?: Partial<User>): User => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
 
@@ -12,7 +10,6 @@ export const userEntityFixture = (
     email: faker.internet.email(firstName, lastName),
     firstName,
     lastName,
-    fullName: `${firstName} ${lastName}`,
     createdAt: faker.date.past(),
     updatedAt: faker.date.recent(),
     ...overrides,
