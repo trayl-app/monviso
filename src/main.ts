@@ -1,6 +1,7 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { GLOBAL_PREFIX } from './constants';
 import { PrismaService } from './prisma/prisma.service';
@@ -17,6 +18,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(classSerializerInterceptor);
   app.useGlobalPipes(new ValidationPipe());
+  app.useLogger(app.get(Logger));
   app.setGlobalPrefix(GLOBAL_PREFIX);
 
   const swaggerConfig = new DocumentBuilder()
