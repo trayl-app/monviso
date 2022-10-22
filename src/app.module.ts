@@ -35,8 +35,6 @@ const imports = [
 @Module({ imports })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    if (process.env.NODE_ENV !== 'development') {
-      consumer.apply(AuthMiddleware).forRoutes(UsersController, MeController);
-    }
+    consumer.apply(AuthMiddleware).forRoutes(UsersController, MeController);
   }
 }
