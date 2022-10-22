@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { Auth } from 'firebase-admin/lib/auth/auth';
 import { NextFunction, Request, Response } from 'express';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { FirebaseService } from '../common/firebase/firebase.service';
+import { UserEntity } from '../users/entities/user.entity';
 
 export type AuthRequest = Request & {
-  userId?: CreateUserDto['id'];
+  userId?: UserEntity['id'];
 };
 
 @Injectable()
@@ -28,11 +28,20 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
+      /**
+       * How to use:
+       *  - development: Bearer <userId>
+       *  - production/test: Bearer <valid firebase id token>
+       */
       const token = bearerToken.split(' ')[1];
 
-      const decodedToken = await this.auth.verifyIdToken(token);
+      if (process.env.NODE_ENV !== 'development') {
+        const decodedToken = await this.auth.verifyIdToken(token);
 
-      req.userId = decodedToken.user_id;
+        req.userId = decodedToken.user_id;
+      } else {
+        req.userId = token;
+      }
 
       next();
     } catch (error) {

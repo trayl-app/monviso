@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { MyId } from './decorators/my-id.decorator';
@@ -12,7 +11,7 @@ export class MeController {
 
   /**
    * GET /api/v1/me - Get the current user
-   * @param {CreateUserDto['id']} myId - The id of the current user
+   * @param {UserEntity['id']} myId - The id of the current user
    * @return {Promise<UserEntity>} The current user
    */
   @Get()
@@ -20,7 +19,7 @@ export class MeController {
     type: UserEntity,
     description: 'The current user',
   })
-  async get(@MyId() myId: CreateUserDto['id']): Promise<UserEntity> {
+  async get(@MyId() myId: UserEntity['id']): Promise<UserEntity> {
     return this.usersService.findByIdOrThrow(myId);
   }
 }
