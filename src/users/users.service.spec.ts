@@ -3,14 +3,14 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaModule } from '../common/prisma/prisma.module';
 import { createUserDtoFixture } from './fixtures/create-user.dto';
 import { UsersService } from './users.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../common/prisma/prisma.service';
 import { userTableFixture } from './fixtures/user.table';
 import { UserEntity } from './entities/user.entity';
 
-jest.mock('../prisma/prisma.service', () => ({
+jest.mock('../common/prisma/prisma.service', () => ({
   PrismaService: jest.fn().mockImplementation(() => ({
     user: {
       findUnique: jest.fn(),

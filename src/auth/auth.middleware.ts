@@ -5,15 +5,15 @@ import {
 } from '@nestjs/common';
 import { Auth } from 'firebase-admin/lib/auth/auth';
 import { NextFunction, Request, Response } from 'express';
-import { FirebaseService } from './firebase.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { FirebaseService } from '../common/firebase/firebase.service';
 
 export type AuthRequest = Request & {
   userId?: CreateUserDto['id'];
 };
 
 @Injectable()
-export class FirebaseAuthMiddleware implements NestMiddleware {
+export class AuthMiddleware implements NestMiddleware {
   private auth: Auth;
 
   constructor(firebaseService: FirebaseService) {

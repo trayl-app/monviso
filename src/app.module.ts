@@ -2,41 +2,41 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { UsersModule } from './users/users.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { FirebaseAuthMiddleware } from './firebase/firebase.middleware';
-import { FirebaseModule } from './firebase/firebase.module';
+import { PrismaModule } from './common/prisma/prisma.module';
+import { AuthMiddleware } from './auth/auth.middleware';
 import { UsersController } from './users/users.controller';
 import { MeModule } from './me/me.module';
 import { MeController } from './me/me.controller';
+import { AuthModule } from './auth/auth.module';
+import { FirebaseModule } from './common/firebase/firebase.module';
 
-@Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    LoggerModule.forRoot(
-      process.env.NODE_ENV === 'development'
-        ? {
-            pinoHttp: {
-              transport: {
-                target: 'pino-pretty',
-              },
+const imports = [
+  ConfigModule.forRoot({
+    isGlobal: true,
+  }),
+  LoggerModule.forRoot(
+    process.env.NODE_ENV === 'development'
+      ? {
+          pinoHttp: {
+            transport: {
+              target: 'pino-pretty',
             },
-          }
-        : undefined,
-    ),
-    UsersModule,
-    PrismaModule,
-    FirebaseModule,
-    MeModule,
-  ],
-})
+          },
+        }
+      : undefined,
+  ),
+  UsersModule,
+  PrismaModule,
+  FirebaseModule,
+  MeModule,
+  AuthModule,
+];
+
+@Module({ imports })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     if (process.env.NODE_ENV !== 'development') {
-      consumer
-        .apply(FirebaseAuthMiddleware)
-        .forRoutes(UsersController, MeController);
+      consumer.apply(AuthMiddleware).forRoutes(UsersController, MeController);
     }
   }
 }

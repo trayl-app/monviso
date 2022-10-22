@@ -3,7 +3,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
-import { MyId } from './decorators/myId.decorator';
+import { MyId } from './decorators/my-id.decorator';
 
 @Controller('v1/me')
 @ApiTags('Current user')

@@ -1,11 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { FirebaseAuthMiddleware } from './firebase.middleware';
-import { FirebaseService } from './firebase.service';
-import { decodedIdTokenFixture } from './fixtures/decodedIdToken';
+import { AuthMiddleware } from './auth.middleware';
+import { FirebaseService } from '../common/firebase/firebase.service';
 
-describe('FirebaseMiddleware', () => {
-  let middleware: FirebaseAuthMiddleware;
+describe('AuthMiddleware', () => {
+  let middleware: AuthMiddleware;
   let service: FirebaseService;
 
   beforeEach(async () => {
@@ -15,7 +14,7 @@ describe('FirebaseMiddleware', () => {
       },
     } as any as FirebaseService;
 
-    middleware = new FirebaseAuthMiddleware(service);
+    middleware = new AuthMiddleware(service);
   });
 
   afterEach(() => {
@@ -51,11 +50,9 @@ describe('FirebaseMiddleware', () => {
       get: jest.fn().mockReturnValue('Bearer valid-token'),
     } as any as Request;
 
-    (service.auth.verifyIdToken as jest.Mock).mockResolvedValue(
-      decodedIdTokenFixture({
-        userId: 'userId',
-      }),
-    );
+    (service.auth.verifyIdToken as jest.Mock).mockResolvedValue({
+      userId: 'userId',
+    });
 
     const next = jest.fn();
 

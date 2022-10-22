@@ -2,9 +2,9 @@ import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { FirebaseService } from '../src/firebase/firebase.service';
+import { FirebaseService } from '../src/common/firebase/firebase.service';
 import { createUserDtoFixture } from '../src/users/fixtures/create-user.dto';
-import { PrismaService } from '../src/prisma/prisma.service';
+import { PrismaService } from '../src/common/prisma/prisma.service';
 
 describe('/api/v1/users', () => {
   let app: INestApplication;
