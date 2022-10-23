@@ -20,6 +20,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));
   app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.enableVersioning();
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Monviso')

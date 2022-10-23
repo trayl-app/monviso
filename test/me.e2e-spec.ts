@@ -48,7 +48,7 @@ describe('/api/v1/me', () => {
         });
 
         const res = await request(app.getHttpServer())
-          .get('/v1/me')
+          .get('/me')
           .set('Authorization', 'Bearer token')
           .expect(200);
 
@@ -62,7 +62,7 @@ describe('/api/v1/me', () => {
 
     describe('Failure', () => {
       it('401', async () => {
-        await request(app.getHttpServer()).get('/v1/me').expect(401);
+        await request(app.getHttpServer()).get('/me').expect(401);
       });
 
       it('404', () => {
@@ -71,7 +71,7 @@ describe('/api/v1/me', () => {
         });
 
         return request(app.getHttpServer())
-          .get('/v1/me')
+          .get('/me')
           .set('Authorization', 'Bearer token')
           .expect(404);
       });

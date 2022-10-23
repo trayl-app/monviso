@@ -44,7 +44,7 @@ describe('/api/v1/users', () => {
         });
 
         const res = await request(app.getHttpServer())
-          .post('/v1/users')
+          .post('/users')
           .send(createUserDto)
           .set('Authorization', 'Bearer token')
           .expect(201);
@@ -63,7 +63,7 @@ describe('/api/v1/users', () => {
           new Error('error'),
         );
 
-        await request(app.getHttpServer()).post('/v1/users').send().expect(401);
+        await request(app.getHttpServer()).post('/users').send().expect(401);
       });
 
       it('409', async () => {
@@ -78,7 +78,7 @@ describe('/api/v1/users', () => {
         });
 
         await request(app.getHttpServer())
-          .post('/v1/users')
+          .post('/users')
           .send(createUserDto)
           .set('Authorization', 'Bearer token')
           .expect(409);

@@ -14,12 +14,12 @@ export class UsersService {
 
   /**
    * Find a user with the given id, or throw an error if the user does not exist
-   * @param {CreateUserDto['id']} id - The id of the user to find
+   * @param {UserEntity['id']} id - The id of the user to find
    * @returns {UserEntity} The user with the given id, if it exists
    * @throws {NotFoundException} If the user does not exist
    * @throws {InternalServerErrorException} If an error occurs
    */
-  async findByIdOrThrow(id: CreateUserDto['id']): Promise<UserEntity> {
+  async findByIdOrThrow(id: UserEntity['id']): Promise<UserEntity> {
     try {
       const user = await this.prismaService.user.findUnique({
         where: { id },

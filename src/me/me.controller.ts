@@ -4,7 +4,10 @@ import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { MyId } from './decorators/my-id.decorator';
 
-@Controller('v1/me')
+@Controller({
+  path: 'me',
+  version: '1',
+})
 @ApiTags('Current user')
 export class MeController {
   constructor(private readonly usersService: UsersService) {}
