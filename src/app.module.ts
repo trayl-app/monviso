@@ -4,9 +4,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { AuthMiddleware } from './auth/auth.middleware';
-import { UsersController } from './users/users.controller';
 import { MeModule } from './me/me.module';
-import { MeController } from './me/me.controller';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './common/firebase/firebase.module';
 
@@ -35,6 +33,6 @@ const imports = [
 @Module({ imports })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(UsersController, MeController);
+    consumer.apply(AuthMiddleware).forRoutes('*');
   }
 }
