@@ -77,4 +77,54 @@ describe('/api/v1/me', () => {
       });
     });
   });
+
+  describe('PUT', () => {
+    describe('Success', () => {
+      it('200', async () => {
+        const createUserDto = createUserDtoFixture();
+
+        await prismaService.user.create({
+          data: createUserDto,
+        });
+
+        (firebaseService.auth.verifyIdToken as jest.Mock).mockResolvedValue({
+          user_id: createUserDto.id,
+        });
+
+        const res = await request(app.getHttpServer())
+          .put('/me')
+          .set('Authorization', 'Bearer token')
+          .send({
+            firstName: 'new first name',
+            lastName: 'new last name',
+          })
+          .expect(200);
+
+        expect(res.body).toEqual({
+          ...createUserDto,
+          firstName: 'new first name',
+          lastName: 'new last name',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        });
+      });
+    });
+
+    describe('Failure', () => {
+      it('401', async () => {
+        await request(app.getHttpServer()).put('/me').expect(401);
+      });
+
+      it('404', () => {
+        (firebaseService.auth.verifyIdToken as jest.Mock).mockResolvedValue({
+          user_id: 'non-existent-user-id',
+        });
+
+        return request(app.getHttpServer())
+          .put('/me')
+          .set('Authorization', 'Bearer token')
+          .expect(404);
+      });
+    });
+  });
 });
