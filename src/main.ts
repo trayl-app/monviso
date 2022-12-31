@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 import { GLOBAL_PREFIX } from './constants';
 import { PrismaService } from './common/prisma/prisma.service';
 import { SwaggerConfig } from './common/swagger/config/swagger.config';
+import { HEALTH_CONTROLLER_OPTIONS } from './health/health.controller';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -29,7 +30,9 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.flushLogs();
 
-  app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.setGlobalPrefix(GLOBAL_PREFIX, {
+    exclude: [HEALTH_CONTROLLER_OPTIONS.path as string],
+  });
   app.enableVersioning();
 
   SwaggerModule.setup(
