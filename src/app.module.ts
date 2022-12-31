@@ -8,6 +8,8 @@ import { MeModule } from './me/me.module';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './common/firebase/firebase.module';
 import { LoggerConfig } from './common/logger/config/logger.config';
+import { HealthModule } from './health/health.module';
+import { HEALTH_CONTROLLER_OPTIONS } from './health/health.controller';
 
 const imports = [
   ConfigModule.forRoot({
@@ -21,11 +23,16 @@ const imports = [
   FirebaseModule,
   MeModule,
   AuthModule,
+  HealthModule,
 ];
 
 @Module({ imports })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*');
+    // @todo replace auth middleware with guard (then we can remove this shit)
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(HEALTH_CONTROLLER_OPTIONS.path as string)
+      .forRoutes('*');
   }
 }
