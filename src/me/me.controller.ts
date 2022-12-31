@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Put } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -10,6 +10,7 @@ import { MyId } from './decorators/my-id.decorator';
   version: '1',
 })
 @ApiTags('Current user')
+@ApiBearerAuth()
 export class MeController {
   constructor(private readonly usersService: UsersService) {}
 
