@@ -7,22 +7,15 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { MeModule } from './me/me.module';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './common/firebase/firebase.module';
+import { LoggerConfig } from './common/logger/config/logger.config';
 
 const imports = [
   ConfigModule.forRoot({
     isGlobal: true,
   }),
-  LoggerModule.forRoot(
-    process.env.NODE_ENV === 'development'
-      ? {
-          pinoHttp: {
-            transport: {
-              target: 'pino-pretty',
-            },
-          },
-        }
-      : undefined,
-  ),
+  LoggerModule.forRoot({
+    pinoHttp: LoggerConfig.options,
+  }),
   UsersModule,
   PrismaModule,
   FirebaseModule,

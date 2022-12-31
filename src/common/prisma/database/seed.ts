@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { userTableFixture } from '../src/users/fixtures/user.table';
+import { userTableFixture } from '../../../users/fixtures/user.table';
 
 const prismaClient = new PrismaClient();
 

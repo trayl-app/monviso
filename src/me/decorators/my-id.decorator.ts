@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { AuthRequest } from 'src/auth/auth.middleware';
+import { AuthRequest } from '../../auth/auth.middleware';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 
 export const MyId = createParamDecorator<CreateUserDto['id']>(
