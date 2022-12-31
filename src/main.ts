@@ -7,7 +7,9 @@ import { GLOBAL_PREFIX } from './constants';
 import { PrismaService } from './common/prisma/prisma.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
@@ -18,7 +20,10 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(classSerializerInterceptor);
   app.useGlobalPipes(new ValidationPipe());
+
   app.useLogger(app.get(Logger));
+  app.flushLogs();
+
   app.setGlobalPrefix(GLOBAL_PREFIX);
   app.enableVersioning();
 
