@@ -33,6 +33,9 @@
   "lint-staged": {
     "*.ts": "eslint --fix"
   },
+  "prisma": {
+    "schema": "src/common/prisma/database/schema.prisma"
+  },
   "dependencies": {
     "@nestjs/common": "9.1.4",
     "@nestjs/config": "2.2.0",

@@ -11,6 +11,10 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
+  /**
+   * Prisma interferes with NestJS enableShutdownHooks
+   * @see https://docs.nestjs.com/recipes/prisma#issues-with-enableshutdownhooks
+   */
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
