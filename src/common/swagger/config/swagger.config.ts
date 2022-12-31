@@ -4,7 +4,7 @@ import {
   SwaggerCustomOptions,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
-import { GLOBAL_PREFIX } from 'src/constants';
+import { GLOBAL_PREFIX } from '../../../constants';
 
 export class SwaggerConfig {
   static get documentConfig(): Omit<OpenAPIObject, 'paths'> {
