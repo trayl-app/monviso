@@ -19,9 +19,13 @@ export class HealthController {
     private readonly prismaHealthIndicator: PrismaHealthIndicator,
   ) {}
 
+  /**
+   * GET /health - Check the health of the application
+   * @return {Promise<HealthCheckResult>} The health of the application
+   */
   @Get()
   @HealthCheck()
-  check(): Promise<HealthCheckResult> {
+  async check(): Promise<HealthCheckResult> {
     return this.healthService.check([
       () => this.prismaHealthIndicator.isHealthy('database'),
     ]);

@@ -2,6 +2,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
+import { FirebaseService } from '../src/common/firebase/firebase.service';
 
 describe('/health', () => {
   let app: INestApplication;
@@ -9,7 +10,14 @@ describe('/health', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FirebaseService)
+      .useValue({
+        auth: {
+          verifyIdToken: jest.fn(),
+        },
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
 
