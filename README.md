@@ -55,9 +55,6 @@ To run the application's tests, run one of the following commands:
 # Unit tests
 $ yarn test
 
-# e2e tests
-$ yarn test:e2e
-
 # Test coverage
 $ yarn test:cov
 ```
