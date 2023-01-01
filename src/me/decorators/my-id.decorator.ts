@@ -1,11 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { AuthRequest } from '../../auth/auth.middleware';
+import { AuthorizedRequest } from '../../auth/types';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 
 export const MyId = createParamDecorator<CreateUserDto['id']>(
   (_, ctx: ExecutionContext) => {
-    const request: AuthRequest = ctx.switchToHttp().getRequest();
+    const request: AuthorizedRequest = ctx.switchToHttp().getRequest();
 
-    return request.userId;
+    return request.auth.user_id;
   },
 );
